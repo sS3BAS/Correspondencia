@@ -13,7 +13,9 @@ class Correspondencia extends Model
         'area_id', 'puesto_id', 'nombre_remitente', 'cargo_remitente',
         'institucion', 'nombre_destinatario', 'cargo_destinatario',
         'domicilio', 'tipo_documento', 'numero_fojas', 'anexos',
-        'asunto', 'prioridad', 'estado'
+        'asunto', 'prioridad', 'estado',
+        'tipo_contenido', 'caracter_especial', 'fecha_limite_entrega',
+        'fecha_hora_envio', 'nombre_empresa', 'nombre_mensajero'
     ];
 
     public function area() {

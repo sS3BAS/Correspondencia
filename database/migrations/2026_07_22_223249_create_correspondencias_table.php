@@ -23,6 +23,12 @@ return new class extends Migration
             $table->string('cargo_destinatario', 50)->nullable();
             $table->string('domicilio', 100)->nullable();
             $table->string('tipo_documento', 50)->nullable();
+            $table->string('tipo_contenido', 50)->nullable();
+            $table->string('caracter_especial', 50)->nullable();
+            $table->dateTime('fecha_limite_entrega')->nullable();
+            $table->dateTime('fecha_hora_envio')->nullable();
+            $table->string('nombre_empresa', 80)->nullable();
+            $table->string('nombre_mensajero', 50)->nullable();
             $table->integer('numero_fojas')->default(0);
             $table->text('anexos')->nullable();
             $table->text('asunto');

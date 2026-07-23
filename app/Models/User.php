@@ -13,6 +13,7 @@ class User extends Authenticatable
 
     protected $fillable = [
         'role_id',
+        'area_id',
         'nombre',
         'apellido_paterno',
         'apellido_materno',
@@ -37,5 +38,10 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function area()
+    {
+        return $this->belongsTo(Area::class);
     }
 }
