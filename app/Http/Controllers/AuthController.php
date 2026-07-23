@@ -23,6 +23,16 @@ class AuthController extends Controller
             'password.required' => 'La contraseña es obligatoria.',
         ]);
 
+        // 1. Verificar si el usuario existe y está inactivo
+        $user = \App\Models\User::where('email', $credentials['email'])->first();
+        if ($user && $user->estado !== 'activo') {
+            return back()->withErrors([
+                'email' => 'Su cuenta se encuentra inactiva y no tiene permiso para ingresar al sistema.',
+            ])->onlyInput('email');
+        }
+
+        $credentials['estado'] = 'activo';
+
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
@@ -30,7 +40,7 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'Las credenciales proporcionadas no son correctas.',
+            'email' => 'El correo o la contraseña son incorrectos.',
         ])->onlyInput('email');
     }
 

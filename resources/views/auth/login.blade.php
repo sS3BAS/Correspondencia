@@ -123,7 +123,7 @@
 <div class="p-4 mb-4 text-sm text-rose-700 bg-rose-50 border border-rose-200/50 rounded-lg" role="alert">
     <div class="flex items-center">
         <span class="material-symbols-outlined text-rose-500 mr-2 text-[20px]">error</span>
-        <span class="font-medium">El correo o la contraseña son incorrectos</span>
+        <span class="font-medium">{{ $errors->first() }}</span>
     </div>
 </div>
 @endif
