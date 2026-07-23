@@ -15,13 +15,19 @@ Route::middleware('auth')->group(function () {
 
     // Dashboard
     Route::get('/', function () {
-        return view('dashboard');
+        $entradasRecientes = \App\Models\Correspondencia::where('tipo', 'entrada')
+            ->with('area')
+            ->orderBy('fecha_registro', 'desc')
+            ->limit(5)
+            ->get();
+        return view('dashboard', compact('entradasRecientes'));
     })->name('home');
 
     // Users Routes (HU-1)
     Route::prefix('admin/users')->name('admin.users.')->group(function () {
         Route::get('/', [\App\Http\Controllers\UserController::class, 'index'])->name('index');
         Route::post('/', [\App\Http\Controllers\UserController::class, 'store'])->name('store');
+        Route::put('/{user}', [\App\Http\Controllers\UserController::class, 'update'])->name('update');
         Route::delete('/{user}', [\App\Http\Controllers\UserController::class, 'destroy'])->name('destroy');
     });
 

@@ -10,6 +10,10 @@ class RepartoController extends Controller
 {
     public function index(Request $request)
     {
+        if (auth()->user()->role_id === 2) {
+            abort(403, 'Acceso no autorizado.');
+        }
+
         $query = Correspondencia::where('tipo', 'salida')->with('reparto');
 
         if ($request->filled('numero_control')) {
@@ -36,6 +40,10 @@ class RepartoController extends Controller
 
     public function store(Request $request)
     {
+        if (auth()->user()->role_id === 2) {
+            abort(403, 'Acceso no autorizado.');
+        }
+
         $validated = $request->validate([
             'correspondencia_id' => 'required|exists:correspondencias,id',
             'tipo_servicio' => 'required|string',

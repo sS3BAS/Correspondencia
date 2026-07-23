@@ -44,4 +44,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Area::class);
     }
+
+    public function isAdmin(): bool
+    {
+        return $this->role_id === 1;
+    }
 }

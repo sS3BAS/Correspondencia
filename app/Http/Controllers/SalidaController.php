@@ -10,6 +10,10 @@ class SalidaController extends Controller
 {
     public function index(Request $request)
     {
+        if (auth()->user()->role_id === 3) {
+            abort(403, 'Acceso no autorizado.');
+        }
+
         $query = Correspondencia::where('tipo', 'salida')->with('area');
 
         if ($request->filled('numero_control')) {
@@ -36,12 +40,20 @@ class SalidaController extends Controller
 
     public function create()
     {
+        if (auth()->user()->role_id === 3) {
+            abort(403, 'Acceso no autorizado.');
+        }
+
         $areas = Area::all();
         return view('salidas.create', compact('areas'));
     }
 
     public function store(Request $request)
     {
+        if (auth()->user()->role_id === 3) {
+            abort(403, 'Acceso no autorizado.');
+        }
+
         $validated = $request->validate([
             'tipo' => 'required|in:salida',
             'prioridad' => 'required|in:ordinario,urgente',

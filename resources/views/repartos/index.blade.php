@@ -138,11 +138,11 @@
                                 @endif
                             </td>
                             <td class="px-6 py-3 text-right">
-                                <div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div class="flex items-center justify-end gap-2">
                                     <button onclick="openRepartoModal({{ $item->id }}, '{{ $item->numero_control }}', '{{ $reparto->tipo_servicio ?? '' }}', '{{ $reparto->empresa ?? '' }}', '{{ $reparto->mensajero ?? '' }}', '{{ $reparto->estado ?? 'En preparación' }}', '{{ $reparto->observaciones ?? '' }}')" class="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors" title="Actualizar Logística">
                                         <span class="material-symbols-outlined text-[20px]">edit_location_alt</span>
                                     </button>
-                                    @if($reparto && $reparto->estado == 'Entregado')
+                                    @if($reparto && $reparto->estado == 'En tránsito')
                                         <a href="{{ route('acuses.create', $item->id) }}" class="p-1.5 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded transition-colors" title="Registrar Acuse (HU-10)">
                                             <span class="material-symbols-outlined text-[20px]">receipt_long</span>
                                         </a>

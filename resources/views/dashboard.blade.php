@@ -10,16 +10,6 @@
             <h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-1">Panel Principal</h1>
             <p class="font-body-md text-body-md text-on-surface-variant">Resumen de la correspondencia diaria y acciones pendientes.</p>
         </div>
-        <div class="flex gap-3">
-            <button class="bg-surface-lowest border border-outline-variant text-on-surface px-4 py-2 rounded-md font-label-sm text-label-sm font-medium hover:bg-surface-variant/50 transition-colors flex items-center gap-2 shadow-sm">
-                <span class="material-symbols-outlined" style="font-size: 18px;">download</span>
-                Exportar Reporte
-            </button>
-            <button class="bg-primary text-on-primary px-4 py-2 rounded-md font-label-sm text-label-sm font-medium hover:bg-primary/90 transition-colors flex items-center gap-2 shadow-sm">
-                <span class="material-symbols-outlined" style="font-size: 18px;">add</span>
-                Nueva Entrada
-            </button>
-        </div>
     </div>
 
     <!-- Resumen de Correspondencia (Bento-style KPI Cards) -->
@@ -105,49 +95,74 @@
         </div>
     </section>
 
-    <!-- Data Table Section Placeholder -->
+    <!-- Data Table Section -->
     <section>
-        <div class="flex justify-between items-center mb-stack-md">
-            <h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Entradas Recientes</h3>
-            <a class="font-label-sm text-label-sm text-secondary hover:underline flex items-center gap-1" href="#">
-                Ver Todo <span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
-            </a>
+        <div class="mb-stack-md flex justify-between items-center">
+            <h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-[24px]">history</span>
+                Entradas Recientes
+            </h3>
         </div>
-        <div class="bg-surface-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden">
+        <div class="bg-surface-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden transition-all hover:shadow-md">
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
                     <thead>
-                        <tr class="bg-surface-container-low border-b border-outline-variant">
-                            <th class="px-4 py-3 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">ID Rastreo</th>
-                            <th class="px-4 py-3 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Remitente</th>
-                            <th class="px-4 py-3 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Departamento</th>
-                            <th class="px-4 py-3 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Estado</th>
-                            <th class="px-4 py-3 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider text-right">Acción</th>
+                        <tr class="bg-surface-variant/40 border-b border-outline-variant">
+                            <th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider font-semibold">ID Rastreo</th>
+                            <th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider font-semibold">Remitente</th>
+                            <th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider font-semibold">Departamento</th>
+                            <th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider font-semibold">Estado</th>
+                            <th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider font-semibold text-right">Acción</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr class="border-b border-surface-variant hover:bg-surface-bright/50 transition-colors">
-                            <td class="px-4 py-3 font-body-md text-body-md font-medium text-on-surface">UCC-2023-8901</td>
-                            <td class="px-4 py-3 font-body-md text-body-md text-on-surface-variant">Ministerio de Defensa</td>
-                            <td class="px-4 py-3 font-body-md text-body-md text-on-surface-variant">Logística</td>
-                            <td class="px-4 py-3">
-                                <span class="inline-flex items-center px-2 py-1 rounded-full bg-secondary-fixed/50 text-on-secondary-fixed font-label-sm text-[11px]">Procesando</span>
-                            </td>
-                            <td class="px-4 py-3 text-right">
-                                <button class="text-outline hover:text-secondary p-1 rounded transition-colors"><span class="material-symbols-outlined" style="font-size: 20px;">more_vert</span></button>
-                            </td>
-                        </tr>
-                        <tr class="border-b border-surface-variant hover:bg-surface-bright/50 transition-colors">
-                            <td class="px-4 py-3 font-body-md text-body-md font-medium text-on-surface">UCC-2023-8902</td>
-                            <td class="px-4 py-3 font-body-md text-body-md text-on-surface-variant">Depto. de Educación</td>
-                            <td class="px-4 py-3 font-body-md text-body-md text-on-surface-variant">Recursos Humanos</td>
-                            <td class="px-4 py-3">
-                                <span class="inline-flex items-center px-2 py-1 rounded-full bg-error-container text-on-error-container font-label-sm text-[11px]">Urgente</span>
-                            </td>
-                            <td class="px-4 py-3 text-right">
-                                <button class="text-outline hover:text-secondary p-1 rounded transition-colors"><span class="material-symbols-outlined" style="font-size: 20px;">more_vert</span></button>
-                            </td>
-                        </tr>
+                    <tbody class="divide-y divide-outline-variant/30 font-body-md text-body-md text-on-surface">
+                        @forelse($entradasRecientes ?? [] as $item)
+                            <tr class="hover:bg-surface-variant/15 transition-colors group">
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex font-mono bg-primary/5 text-primary border border-primary/10 px-2.5 py-1 rounded-lg text-xs font-semibold">
+                                        {{ $item->numero_control ?? $item->numero_ficha ?? 'Sin Ficha' }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-2 font-medium text-on-surface group-hover:text-primary transition-colors">
+                                        <span class="material-symbols-outlined text-on-surface-variant/60 text-[18px]">domain</span>
+                                        {{ $item->nombre_remitente }}
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-on-surface-variant/80">
+                                    {{ $item->area->nombre ?? 'Sin Área' }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    @if($item->estado == 'pendiente' || $item->estado == 'registrada')
+                                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-sky-50 text-sky-700 border border-sky-200/50">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-sky-500 mr-1.5"></span> Registrada
+                                        </span>
+                                    @elseif($item->estado == 'entregada')
+                                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/50">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span> Entregada
+                                        </span>
+                                    @else
+                                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-50 text-slate-700 border border-slate-200">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-slate-500 mr-1.5"></span> {{ ucfirst($item->estado) }}
+                                        </span>
+                                    @endif
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <a href="{{ route('seguimiento.index', ['numero_control' => $item->numero_control]) }}" class="text-on-surface-variant hover:text-primary hover:bg-surface-variant/60 p-1.5 rounded-full transition-all inline-block cursor-pointer" title="Ver Detalle">
+                                        <span class="material-symbols-outlined text-[20px] block">visibility</span>
+                                    </a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="px-6 py-12 text-center text-on-surface-variant/60">
+                                    <div class="flex flex-col items-center justify-center gap-2">
+                                        <span class="material-symbols-outlined text-4xl text-on-surface-variant/30">inbox</span>
+                                        <p class="font-semibold text-on-surface-variant">No hay correspondencia reciente registrada</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

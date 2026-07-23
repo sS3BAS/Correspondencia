@@ -11,11 +11,18 @@ class EntradaController extends Controller
 {
     public function index(Request $request)
     {
+        if (auth()->user()->role_id === 3) {
+            abort(403, 'Acceso no autorizado.');
+        }
+
         $query = Correspondencia::with('area')->where('tipo', 'entrada');
 
         // Filtros
         if ($request->filled('numero_ficha')) {
-            $query->where('numero_ficha', 'like', '%' . $request->numero_ficha . '%');
+            $query->where(function ($q) use ($request) {
+                $q->where('numero_ficha', 'like', '%' . $request->numero_ficha . '%')
+                  ->orWhere('numero_control', 'like', '%' . $request->numero_ficha . '%');
+            });
         }
         if ($request->filled('fecha_registro')) {
             $query->whereDate('fecha_registro', $request->fecha_registro);
@@ -35,6 +42,10 @@ class EntradaController extends Controller
 
     public function create()
     {
+        if (auth()->user()->role_id === 3) {
+            abort(403, 'Acceso no autorizado.');
+        }
+
         $areas = Area::all();
         $puestos = Puesto::all();
         
@@ -43,6 +54,10 @@ class EntradaController extends Controller
 
     public function store(Request $request)
     {
+        if (auth()->user()->role_id === 3) {
+            abort(403, 'Acceso no autorizado.');
+        }
+
         $validated = $request->validate([
             'tipo' => 'required|in:entrada',
             'fecha_registro' => 'required|date',
@@ -78,17 +93,25 @@ class EntradaController extends Controller
 
         Correspondencia::create($validated);
 
-        return redirect()->route('home')->with('success', 'Correspondencia de entrada registrada exitosamente.');
+        return redirect()->route('entradas.index')->with('success', 'Correspondencia registrada correctamente.');
     }
 
     public function entrega(Correspondencia $entrada)
     {
+        if (auth()->user()->role_id === 3) {
+            abort(403, 'Acceso no autorizado.');
+        }
+
         $areas = Area::all();
         return view('entradas.entrega', compact('entrada', 'areas'));
     }
 
     public function storeEntrega(Request $request)
     {
+        if (auth()->user()->role_id === 3) {
+            abort(403, 'Acceso no autorizado.');
+        }
+
         $validated = $request->validate([
             'correspondencia_id' => 'required|exists:correspondencias,id',
             'area_recibe' => 'required|string',

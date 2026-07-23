@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
         }
 
         // 2. Seed de Áreas
-        $areas = ['Dirección', 'Jurídico', 'Finanzas', 'Recursos Humanos'];
+        $areas = ['Dirección', 'Jurídico', 'Finanzas', 'Recursos Humanos', 'Mensajeria'];
         foreach ($areas as $area) {
             Area::firstOrCreate(['nombre' => $area]);
         }

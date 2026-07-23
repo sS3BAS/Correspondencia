@@ -14,7 +14,7 @@
                 extend: {
                     "colors": {
                         "tertiary-fixed": "#fcdeb5",
-                        "primary-container": "#131b2e",
+                        "primary-container": "#387c85",
                         "on-primary-container": "#7c839b",
                         "inverse-primary": "#bec6e0",
                         "inverse-surface": "#213145",
@@ -34,7 +34,7 @@
                         "outline-variant": "#c6c6cd",
                         "on-secondary-container": "#fefcff",
                         "on-tertiary-container": "#98805d",
-                        "primary": "#000000",
+                        "primary": "#46959f",
                         "secondary-fixed-dim": "#b4c5ff",
                         "on-error-container": "#93000a",
                         "secondary": "#0051d5",
@@ -107,11 +107,11 @@
 <div class="w-full max-w-md bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm p-8 flex flex-col items-center">
 <!-- Logo Area -->
 <div class="mb-8 flex flex-col items-center text-center">
-<div class="w-16 h-16 bg-primary-container rounded-lg flex items-center justify-center mb-4 text-on-primary">
+<div class="w-16 h-16 bg-primary rounded-lg flex items-center justify-center mb-4 text-on-primary">
 <span class="material-symbols-outlined text-4xl" data-icon="account_balance">account_balance</span>
 </div>
 <h1 class="font-headline-md text-headline-md text-on-surface mb-2">Plataforma UCC</h1>
-<p class="font-body-md text-body-md text-on-surface-variant">Acceso Institucional Seguro</p>
+<p class="font-body-md text-body-md text-on-surface-variant">Sistema de Gestión de Correspondencia</p>
 </div>
 
 <!-- Form -->
@@ -120,16 +120,11 @@
 
 <!-- Validation Errors -->
 @if($errors->any())
-<div class="p-4 mb-4 text-sm text-error-container bg-error rounded-lg" role="alert">
-    <div class="flex items-center mb-2">
-        <span class="material-symbols-outlined text-sm mr-2" data-icon="error">error</span>
-        <span class="font-label-sm font-bold">Por favor corrige los siguientes errores:</span>
+<div class="p-4 mb-4 text-sm text-rose-700 bg-rose-50 border border-rose-200/50 rounded-lg" role="alert">
+    <div class="flex items-center">
+        <span class="material-symbols-outlined text-rose-500 mr-2 text-[20px]">error</span>
+        <span class="font-medium">El correo o la contraseña son incorrectos</span>
     </div>
-    <ul class="list-disc pl-5 font-body-md">
-        @foreach($errors->all() as $error)
-            <li>{{ $error }}</li>
-        @endforeach
-    </ul>
 </div>
 @endif
 
@@ -152,7 +147,10 @@
 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-on-surface-variant">
 <span class="material-symbols-outlined text-xl" data-icon="lock">lock</span>
 </div>
-<input class="block w-full pl-10 pr-3 py-2 border @error('password') border-error @else border-outline-variant @enderror rounded-md text-on-surface font-body-md text-body-md placeholder-on-surface-variant/50 focus:outline-none focus:ring-1 focus:ring-secondary focus:border-secondary transition-colors" id="password" name="password" placeholder="••••••••" required type="password"/>
+<input class="block w-full pl-10 pr-10 py-2 border @error('password') border-error @else border-outline-variant @enderror rounded-md text-on-surface font-body-md text-body-md placeholder-on-surface-variant/50 focus:outline-none focus:ring-1 focus:ring-secondary focus:border-secondary transition-colors" id="password" name="password" placeholder="••••••••" required type="password"/>
+<button type="button" id="togglePassword" class="absolute inset-y-0 right-0 pr-3 flex items-center text-on-surface-variant hover:text-on-surface focus:outline-none transition-colors" aria-label="Mostrar u ocultar contraseña">
+<span class="material-symbols-outlined text-xl select-none" id="togglePasswordIcon">visibility</span>
+</button>
 </div>
 </div>
 <!-- Submit Button -->
@@ -166,5 +164,21 @@
 </div>
 </form>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const togglePasswordBtn = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+    const togglePasswordIcon = document.getElementById('togglePasswordIcon');
+
+    if (togglePasswordBtn && passwordInput && togglePasswordIcon) {
+        togglePasswordBtn.addEventListener('click', () => {
+            const isPassword = passwordInput.type === 'password';
+            passwordInput.type = isPassword ? 'text' : 'password';
+            togglePasswordIcon.textContent = isPassword ? 'visibility_off' : 'visibility';
+        });
+    }
+});
+</script>
 </body>
 </html>
