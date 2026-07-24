@@ -11,7 +11,7 @@ class EntradaController extends Controller
 {
     public function index(Request $request)
     {
-        if (auth()->user()->role_id === 3) {
+        if (in_array(auth()->user()->role_id, [3, 4])) {
             abort(403, 'Acceso no autorizado.');
         }
 
@@ -42,7 +42,7 @@ class EntradaController extends Controller
 
     public function create()
     {
-        if (auth()->user()->role_id === 3) {
+        if (auth()->user()->role_id !== 2) {
             abort(403, 'Acceso no autorizado.');
         }
 
@@ -54,6 +54,9 @@ class EntradaController extends Controller
 
     public function store(Request $request)
     {
+        if (auth()->user()->role_id !== 2) {
+            abort(403, 'Acceso no autorizado.');
+        }
         if (auth()->user()->role_id === 3) {
             abort(403, 'Acceso no autorizado.');
         }
@@ -98,7 +101,7 @@ class EntradaController extends Controller
 
     public function entrega(Correspondencia $entrada)
     {
-        if (auth()->user()->role_id === 3) {
+        if (auth()->user()->role_id !== 2) {
             abort(403, 'Acceso no autorizado.');
         }
 
@@ -108,7 +111,7 @@ class EntradaController extends Controller
 
     public function storeEntrega(Request $request)
     {
-        if (auth()->user()->role_id === 3) {
+        if (auth()->user()->role_id !== 2) {
             abort(403, 'Acceso no autorizado.');
         }
 
@@ -126,6 +129,6 @@ class EntradaController extends Controller
         $entrada->estado = 'entregada';
         $entrada->save();
 
-        return redirect()->route('entradas.index')->with('success', 'Entrega registrada exitosamente.');
+        return redirect()->route('entradas.index')->with('success', 'Entrega registrada correctamente.');
     }
 }

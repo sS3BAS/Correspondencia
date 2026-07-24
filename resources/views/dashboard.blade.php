@@ -4,6 +4,13 @@
 
 @section('content')
 <div class="max-w-container-max mx-auto">
+    @if(session('success'))
+    <div id="successAlert" class="mb-6 p-4 text-sm text-emerald-800 bg-emerald-50 rounded-lg border border-emerald-200/50 flex items-center transition-all duration-500 ease-in-out" role="alert">
+        <span class="material-symbols-outlined mr-2 text-emerald-500">check_circle</span>
+        <span class="font-medium">{{ session('success') }}</span>
+    </div>
+    @endif
+
     <!-- Page Header -->
     <div class="mb-stack-lg flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
@@ -23,16 +30,12 @@
                     <div class="p-2 bg-surface-variant text-secondary rounded-lg">
                         <span class="material-symbols-outlined">inventory_2</span>
                     </div>
-                    <span class="bg-secondary-fixed/50 text-on-secondary-fixed font-label-caps text-label-caps px-2 py-1 rounded-full text-[10px]">HOY</span>
+                    <span class="bg-secondary-fixed/50 text-on-secondary-fixed font-label-caps text-label-caps px-2 py-1 rounded-full text-[10px]">REGISTRADAS</span>
                 </div>
                 <div class="relative z-10">
                     <p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Total Entradas</p>
                     <div class="flex items-end gap-3">
-                        <h4 class="font-headline-lg text-headline-lg text-on-surface leading-none">1,248</h4>
-                        <span class="text-secondary font-label-sm text-label-sm flex items-center mb-1">
-                            <span class="material-symbols-outlined" style="font-size: 14px;">arrow_upward</span>
-                            12%
-                        </span>
+                        <h4 class="font-headline-lg text-headline-lg text-on-surface leading-none">{{ number_format($totalEntradas) }}</h4>
                     </div>
                 </div>
             </div>
@@ -44,14 +47,14 @@
                     <div class="p-2 bg-tertiary-fixed/50 text-on-tertiary-container rounded-lg">
                         <span class="material-symbols-outlined">schedule</span>
                     </div>
+                    @if($pendientesEntrega > 0)
+                        <span class="bg-amber-100 text-amber-800 font-label-caps text-label-caps px-2 py-1 rounded-full text-[10px]">EN PROCESO</span>
+                    @endif
                 </div>
                 <div class="relative z-10">
                     <p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Pendientes de Entrega</p>
                     <div class="flex items-end gap-3">
-                        <h4 class="font-headline-lg text-headline-lg text-on-surface leading-none">342</h4>
-                        <span class="text-outline font-label-sm text-label-sm flex items-center mb-1">
-                            Acción Req.
-                        </span>
+                        <h4 class="font-headline-lg text-headline-lg text-on-surface leading-none">{{ number_format($pendientesEntrega) }}</h4>
                     </div>
                 </div>
             </div>
@@ -63,16 +66,14 @@
                     <div class="p-2 bg-error-container/50 text-error rounded-lg">
                         <span class="material-symbols-outlined">warning</span>
                     </div>
-                    <span class="bg-error/10 text-error font-label-caps text-label-caps px-2 py-1 rounded-full text-[10px] animate-pulse">CRÍTICO</span>
+                    @if($urgentes > 0)
+                        <span class="bg-error/10 text-error font-label-caps text-label-caps px-2 py-1 rounded-full text-[10px] animate-pulse">ATENCIÓN</span>
+                    @endif
                 </div>
                 <div class="relative z-10">
                     <p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Urgentes</p>
                     <div class="flex items-end gap-3">
-                        <h4 class="font-headline-lg text-headline-lg text-on-surface leading-none">28</h4>
-                        <span class="text-error font-label-sm text-label-sm flex items-center mb-1">
-                            <span class="material-symbols-outlined" style="font-size: 14px;">arrow_upward</span>
-                            5%
-                        </span>
+                        <h4 class="font-headline-lg text-headline-lg text-on-surface leading-none">{{ number_format($urgentes) }}</h4>
                     </div>
                 </div>
             </div>
@@ -84,11 +85,12 @@
                     <div class="p-2 bg-primary-fixed/50 text-on-primary-fixed-variant rounded-lg">
                         <span class="material-symbols-outlined">check_circle</span>
                     </div>
+                    <span class="bg-emerald-100 text-emerald-800 font-label-caps text-label-caps px-2 py-1 rounded-full text-[10px]">HOY</span>
                 </div>
                 <div class="relative z-10">
                     <p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Entregados Hoy</p>
                     <div class="flex items-end gap-3">
-                        <h4 class="font-headline-lg text-headline-lg text-on-surface leading-none">891</h4>
+                        <h4 class="font-headline-lg text-headline-lg text-on-surface leading-none">{{ number_format($entregadosHoy) }}</h4>
                     </div>
                 </div>
             </div>
@@ -169,4 +171,19 @@
         </div>
     </section>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Auto-dismiss success alert
+    const successAlert = document.getElementById('successAlert');
+    if (successAlert) {
+        setTimeout(() => {
+            successAlert.style.opacity = '0';
+            setTimeout(() => {
+                successAlert.remove();
+            }, 500);
+        }, 2500); // 2.5 seconds
+    }
+});
+</script>
 @endsection

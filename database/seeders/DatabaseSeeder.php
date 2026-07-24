@@ -50,5 +50,30 @@ class DatabaseSeeder extends Seeder
                 'estado' => 'activo',
             ]
         );
+
+        // 5. Usuarios Mensajeros por defecto para asignación
+        User::firstOrCreate(
+            ['email' => 'juan.perez@sistema.com'],
+            [
+                'role_id' => 4,
+                'nombre' => 'Juan',
+                'apellido_paterno' => 'Pérez',
+                'apellido_materno' => 'López',
+                'password' => Hash::make('password123'),
+                'estado' => 'activo',
+            ]
+        );
+
+        User::firstOrCreate(
+            ['email' => 'carlos.gomez@sistema.com'],
+            [
+                'role_id' => 4,
+                'nombre' => 'Carlos',
+                'apellido_paterno' => 'Gómez',
+                'apellido_materno' => 'Ruiz',
+                'password' => Hash::make('password123'),
+                'estado' => 'activo',
+            ]
+        );
     }
 }

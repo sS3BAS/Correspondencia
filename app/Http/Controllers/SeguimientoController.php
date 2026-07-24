@@ -10,11 +10,15 @@ class SeguimientoController extends Controller
 {
     public function index(Request $request)
     {
+        if (auth()->user()->role_id === 4) {
+            abort(403, 'Acceso no autorizado.');
+        }
+
         $areas = Area::all();
         $correspondencia = null;
 
         if ($request->anyFilled(['numero_ficha', 'numero_control', 'fecha', 'area_id', 'estado'])) {
-            $query = Correspondencia::with(['area', 'reparto', 'historial.usuario']);
+            $query = Correspondencia::with(['area', 'reparto', 'acuse', 'historial.usuario']);
 
             if ($request->filled('numero_control')) {
                 $query->where('numero_control', $request->numero_control);

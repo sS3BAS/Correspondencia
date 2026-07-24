@@ -4,6 +4,13 @@
 
 @section('content')
 <div class="max-w-[1440px] mx-auto">
+    @if(session('success'))
+    <div id="successAlert" class="mb-6 p-4 text-sm text-emerald-800 bg-emerald-50 rounded-lg border border-emerald-200/50 flex items-center transition-all duration-500 ease-in-out" role="alert">
+        <span class="material-symbols-outlined mr-2 text-emerald-500">check_circle</span>
+        <span class="font-medium">{{ session('success') }}</span>
+    </div>
+    @endif
+
     <!-- Page Header -->
     <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -65,12 +72,14 @@
     </div>
 
     <!-- Actions Bar -->
+    @if(auth()->user()->role_id === 2)
     <div class="mb-4 flex justify-end">
         <a href="{{ route('entradas.create') }}" class="inline-flex items-center gap-2 bg-primary hover:bg-primary/95 text-on-primary font-semibold text-sm px-5 py-2.5 rounded-lg shadow-sm hover:shadow transition-all cursor-pointer scale-95 hover:scale-100 duration-150">
             <span class="material-symbols-outlined text-[18px]">add</span>
             Nueva Entrada
         </a>
     </div>
+    @endif
 
     <!-- Table Card -->
     <div class="bg-surface-lowest border border-outline-variant rounded-2xl shadow-sm overflow-hidden flex flex-col transition-shadow hover:shadow-md">
@@ -83,7 +92,7 @@
                         <th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider font-semibold">Origen / Remitente</th>
                         <th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider font-semibold">Destino / Asunto</th>
                         <th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider font-semibold text-center">Prioridad / Estatus</th>
-                        <th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider font-semibold text-right">Acciones</th>
+                        <th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider font-semibold text-center">Acción</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-outline-variant/30 font-body-md text-body-md text-on-surface">
@@ -166,13 +175,13 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-6 py-4 text-right">
-                                <div class="flex items-center justify-end gap-1">
+                            <td class="px-6 py-4 text-center">
+                                <div class="flex items-center justify-center gap-1">
                                     <a href="{{ route('seguimiento.index', ['numero_control' => $item->numero_control]) }}" class="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-variant/60 rounded-full transition-all cursor-pointer" title="Ver Detalle">
                                         <span class="material-symbols-outlined text-[20px] block">visibility</span>
                                     </a>
                                     
-                                    @if($item->estado == 'pendiente' || $item->estado == 'registrada')
+                                    @if(($item->estado == 'pendiente' || $item->estado == 'registrada') && auth()->user()->role_id === 2)
                                         <!-- Enlace para Registrar Entrega -->
                                         <a href="{{ route('entradas.entrega', $item->id) }}" class="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-variant/60 rounded-full transition-all cursor-pointer" title="Registrar Entrega">
                                             <span class="material-symbols-outlined text-[20px] block">local_shipping</span>
@@ -208,4 +217,19 @@
         @endif
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Auto-dismiss success alert
+    const successAlert = document.getElementById('successAlert');
+    if (successAlert) {
+        setTimeout(() => {
+            successAlert.style.opacity = '0';
+            setTimeout(() => {
+                successAlert.remove();
+            }, 500);
+        }, 2500); // 2.5 seconds
+    }
+});
+</script>
 @endsection

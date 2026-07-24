@@ -15,12 +15,31 @@ Route::middleware('auth')->group(function () {
 
     // Dashboard
     Route::get('/', function () {
+        $totalEntradas = \App\Models\Correspondencia::where('tipo', 'entrada')->count();
+
+        $pendientesEntrega = \App\Models\Correspondencia::whereIn('estado', ['pendiente', 'registrada', 'en_recursos_materiales', 'en transito'])->count();
+
+        $urgentes = \App\Models\Correspondencia::where('prioridad', 'urgente')
+            ->whereIn('estado', ['pendiente', 'registrada', 'en_recursos_materiales', 'en transito'])
+            ->count();
+
+        $entregadosHoy = \App\Models\Correspondencia::where('estado', 'entregada')
+            ->whereDate('updated_at', \Carbon\Carbon::today())
+            ->count();
+
         $entradasRecientes = \App\Models\Correspondencia::where('tipo', 'entrada')
             ->with('area')
             ->orderBy('fecha_registro', 'desc')
             ->limit(5)
             ->get();
-        return view('dashboard', compact('entradasRecientes'));
+
+        return view('dashboard', compact(
+            'totalEntradas',
+            'pendientesEntrega',
+            'urgentes',
+            'entregadosHoy',
+            'entradasRecientes'
+        ));
     })->name('home');
 
     // Users Routes (HU-1)
@@ -45,6 +64,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [\App\Http\Controllers\SalidaController::class, 'index'])->name('index');
         Route::get('/crear', [\App\Http\Controllers\SalidaController::class, 'create'])->name('create');
         Route::post('/', [\App\Http\Controllers\SalidaController::class, 'store'])->name('store');
+        Route::post('/{correspondencia}/entregar-rm', [\App\Http\Controllers\SalidaController::class, 'entregarRM'])->name('entregarRM');
     });
 
     // Repartos / Bitácora Logística (HU-09)
@@ -58,6 +78,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/{correspondencia}/crear', [\App\Http\Controllers\AcuseController::class, 'create'])->name('create');
         Route::post('/', [\App\Http\Controllers\AcuseController::class, 'store'])->name('store');
     });
+
+    // Vista exclusiva de entregas para Mensajero (HU-10)
+    Route::get('/mis-entregas', [\App\Http\Controllers\RepartoController::class, 'misEntregas'])->name('mensajero.entregas');
 
     // Seguimiento (HU-11)
     Route::get('/seguimiento', [\App\Http\Controllers\SeguimientoController::class, 'index'])->name('seguimiento.index');

@@ -29,7 +29,7 @@
         @endif
         
         <!-- Consulta Entradas (HU-05) y Captura Entrada (HU-04) -->
-        @if(auth()->user()->role_id !== 3)
+        @if(auth()->user()->role_id !== 3 && auth()->user()->role_id !== 4)
         <a class="flex items-center gap-3 px-4 py-3 {{ request()->routeIs('entradas.*') ? 'bg-secondary-container text-on-secondary-container border-l-2 border-secondary font-semibold' : 'text-on-primary-container hover:bg-on-primary-fixed-variant/10' }} rounded-md transition-colors scale-95 hover:scale-100 duration-150" href="{{ route('entradas.index') }}">
             <span class="material-symbols-outlined">inbox</span>
             <span class="font-body-md text-body-md font-medium">Entradas</span>
@@ -37,7 +37,7 @@
         @endif
         
         <!-- Captura Salidas (HU-07) -->
-        @if(auth()->user()->role_id !== 3)
+        @if(auth()->user()->role_id !== 3 && auth()->user()->role_id !== 4)
         <a class="flex items-center gap-3 px-4 py-3 {{ request()->routeIs('salidas.*') ? 'bg-secondary-container text-on-secondary-container border-l-2 border-secondary font-semibold' : 'text-on-primary-container hover:bg-on-primary-fixed-variant/10' }} rounded-md transition-colors scale-95 hover:scale-100 duration-150" href="{{ route('salidas.index') }}">
             <span class="material-symbols-outlined">send</span>
             <span class="font-body-md text-body-md font-medium">Salidas</span>
@@ -45,18 +45,28 @@
         @endif
 
         <!-- Bitácora Logística (HU-09) -->
-        @if(auth()->user()->role_id !== 2)
+        @if(auth()->user()->role_id !== 2 && auth()->user()->role_id !== 4)
         <a class="flex items-center gap-3 px-4 py-3 {{ request()->routeIs('repartos.*') ? 'bg-secondary-container text-on-secondary-container border-l-2 border-secondary font-semibold' : 'text-on-primary-container hover:bg-on-primary-fixed-variant/10' }} rounded-md transition-colors scale-95 hover:scale-100 duration-150" href="{{ route('repartos.index') }}">
             <span class="material-symbols-outlined">local_shipping</span>
             <span class="font-body-md text-body-md font-medium">Control de Reparto</span>
         </a>
         @endif
         
+        <!-- Mis Entregas (HU-10) Exclusivo para Mensajero (role_id = 4) -->
+        @if(auth()->user()->role_id === 4)
+        <a class="flex items-center gap-3 px-4 py-3 {{ request()->routeIs('mensajero.*') ? 'bg-secondary-container text-on-secondary-container border-l-2 border-secondary font-semibold' : 'text-on-primary-container hover:bg-on-primary-fixed-variant/10' }} rounded-md transition-colors scale-95 hover:scale-100 duration-150" href="{{ route('mensajero.entregas') }}">
+            <span class="material-symbols-outlined">two_wheeler</span>
+            <span class="font-body-md text-body-md font-medium">Mis Entregas</span>
+        </a>
+        @endif
+
         <!-- Seguimiento (HU-11) -->
+        @if(auth()->user()->role_id !== 4)
         <a class="flex items-center gap-3 px-4 py-3 {{ request()->routeIs('seguimiento.*') ? 'bg-secondary-container text-on-secondary-container border-l-2 border-secondary font-semibold' : 'text-on-primary-container hover:bg-on-primary-fixed-variant/10' }} rounded-md transition-colors scale-95 hover:scale-100 duration-150" href="{{ route('seguimiento.index') }}">
             <span class="material-symbols-outlined">location_searching</span>
             <span class="font-body-md text-body-md font-medium">Rastreo</span>
         </a>
+        @endif
     </div>
 
     <!-- Footer Links -->
